@@ -1,0 +1,82 @@
+﻿@model IEnumerable<MvcLibraryApp.Models.BookListModel>
+
+@{
+    ViewBag.Title = "BookList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>BookList</h2>
+
+<div class="table-responsive">
+    <table id="CustomerListTable" class="table table-bordered table-sm display nowrap" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Release Date
+                </th>
+                <th>
+                    Author
+                </th>
+                <th>
+                    Genre
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody class="tbody_style">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style='text-align:left'>
+                        @Html.DisplayFor(modelItem => item.BookName)
+                    </td>
+                    <td style='text-align:left'>
+                        @Html.DisplayFor(modelItem => item.ReleaseDate)
+                    </td>
+                    <td style='text-align:left'>
+                        @Html.DisplayFor(modelItem => item.Author)
+                    </td>
+                    <td style='text-align:left'>
+                        @Html.DisplayFor(modelItem => item.Genre)
+                    </td>
+                    <td style='text-align:left'>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="/Library/EditBook/@Html.DisplayFor(modelItem => item.Id)"><i class="glyphicon glyphicon-edit"></i></a>
+                        <button class="btn btn-sm btn-danger" type="button" data-toggle="modal" data-target="#RemoveUser_@Html.DisplayFor(m => item.Id)"><i class="glyphicon glyphicon-remove"></i></button>
+                        <!-- Remove User Modal -->
+                        <div class="modal fade" id="RemoveUser_@Html.DisplayFor(m => item.Id)" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title"> Remove Customer</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    </div>
+                                    @using (Html.BeginForm("RemoveBook", null, FormMethod.Post, new { @class = "smart-form client-form", role = "form", id = "smart-form-register" }))
+                                    {
+                                        <div class="modal-body">
+                                            Are you sure you want to remove the Book <strong> @Html.DisplayFor(modelItem => item.BookName) </strong>?
+
+                                            <input type="hidden" class="form-control" name="BookId" value="@Html.DisplayFor(modelItem => item.Id)" />
+                                        </div>
+                                        <div class="modal-footer clearfix">
+                                            <button type="submit" class="btn btn-primary"> Yes</button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"> Cancel</button>
+                                        </div>
+                                    }
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div>
+                        <!-- /.Remove User modal -->
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
